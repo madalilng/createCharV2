@@ -20,11 +20,13 @@ sub create {
 	my (undef, $args) = @_;
 	Plugins::delHooks($hooks);
 	if ($config{char} != 1 ) {
+		my $char_name = GenerateName("cv(r,v)(en)vccv");
 		message "[CreateChar] Creating Character\n", "system";
+		message "[CreateChar] Name : " . $char_name . "\n", "system";
 		$hooks = Plugins::addHooks(
 			['charSelectScreen', \&login],
 		);
-		$messageSender->sendCharCreate(1, GenerateName("cvcrrc cvcrv"));
+		$messageSender->sendCharCreate(1, $char_name ,(1 + int rand(15)) ,(1 + int rand(5)) ,0 ,(1 + int rand(2)) );
 		$timeout{'charlogin'}{'time'} = time;
 		$args->{return} = 2;
 	}
@@ -41,28 +43,55 @@ sub login {
 
 sub GenerateName {
 	my ($pattern) = @_;
-	my @chars = split("", $pattern);
 	my $generated = "";
 	my @Consonants = ("B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z");
 	my @Vowels = ("A","E","I","O","U");
 
-	foreach my $val (@chars) {
-    	if ($val eq "c" )
-    	{
-    		$generated = $generated . $Consonants[rand @Consonants];
-    	} elsif ( $val eq "v" ) {
-    		$generated = $generated . $Vowels[rand @Vowels];
-    	} elsif ( $val eq " "){
-    		$generated = $generated . " ";
-    	}
-    	else {
-    		my $r = int(rand(2));
-    		if ($r eq 1){
-    			$generated = $generated . $Consonants[rand @Consonants];
-    		} else {
-    			$generated = $generated . $Vowels[rand @Vowels];
-    		}
-    	}
+	if ( $pattern =~ m/\(/ and $pattern =~ m/\)/ ) {
+		
+		my @Array;
+    	my @Groups = ( $pattern =~ m/\((.*?)\)/g );
+    	my $PlaceHolder = $pattern;
+
+    	for(my $index=0;$index<=$#Groups;$index++){
+	      $PlaceHolder =~ s/$Groups[$index]/$index/g;
+	    }
+
+	    my @chars = split("", $PlaceHolder);
+	    foreach my $val (@chars) {
+	    	if ($val eq "c" )
+	    	{
+	    		$generated = $generated . $Consonants[rand @Consonants];
+	    	} elsif ( $val eq "v" ) {
+	    		$generated = $generated . $Vowels[rand @Vowels];
+	    	} else {
+	    		$generated = $generated . $val;
+	    	}
+	  	}
+
+	  	for(my $index=0;$index<=$#Groups;$index++){
+	  		my $chr = "";
+	  		if( $Groups[$index] =~ m/\,/ ){
+	  			my @choices = split(",", $Groups[$index]);
+	  			$chr = $choices[rand @choices];
+	  		}else{
+	  			$chr = $Groups[$index];
+	  		}
+	      	$generated =~ s/\($index\)/$chr/g;
+	    }
+
+	} else {
+		my @chars = split("", $pattern);
+		foreach my $val (@chars) {
+	    	if ($val eq "c" )
+	    	{
+	    		$generated = $generated . $Consonants[rand @Consonants];
+	    	} elsif ( $val eq "v" ) {
+	    		$generated = $generated . $Vowels[rand @Vowels];
+	    	} else {
+	    		$generated = $generated . $val;
+	    	}
+	  	}
   	}
   	return lc $generated;
 }
