@@ -3,4 +3,4 @@
 #if someone can randomize the names, even better
 #Yes I found it with Google and may slight modifications
 #Untested
-#saveAS plugins/autoremake/autoremake.pl 
+#saveAS plugins/createchar/createchar.pl 
