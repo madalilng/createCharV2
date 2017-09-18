@@ -1,4 +1,4 @@
-package createchar;
+package OpenKore::Plugins::createChar;
 
 use strict;
 use Plugins;
@@ -10,8 +10,10 @@ use Utils;
 use Log qw(message debug);
 use Commands;
 
-Plugins::register('createchar' \&onUnload);
-my $hooks = Plugins::addHooks(['charSelectScreen', \&delete, undef]);
+our $name = 'createChar';
+
+Plugins::register($name, "$name plugin", \&onUnload);
+my $hooks = Plugins::addHooks(['charSelectScreen', undef]);
 
 sub onUnload {
 	Plugins::delHooks($hooks);
@@ -21,7 +23,7 @@ sub create {
 	my (undef, $args) = @_;
 	Plugins::delHooks($hooks);
 	$hooks = Plugins::addHooks(['charSelectScreen', \&login, undef]);
-	$messageSender->sendCharCreate(0, $config{CharName}, 1, 1, novice, F);
+	$messageSender->sendCharCreate(0, $config{CharName}, 1, 1, 'novice', 'F');
 	$timeout{'charlogin'}{'time'} = time;
 	$args->{return} = 2;
 }
@@ -29,9 +31,8 @@ sub create {
 sub login {
 	my (undef, $args) = @_;
 	Plugins::delHooks($hooks);
-	$hooks = Plugins::addHooks([‘charSelectScreen’, \&delete, undef]);
+	$hooks = Plugins::addHooks(['charSelectScreen', \&delete, undef]);
 	$messageSender->sendCharLogin(0);
-	$timeout{‘charlogin’}{‘time’} = time;
-	configModify(“autodelete”, 0);
+	$timeout{'charlogin'}{'time'} = time;
 	$args->{return} = 1;
 }
