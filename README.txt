@@ -1,5 +1,5 @@
 ################### How to ###################
-1. saveAS plugins/createChar/createChar.pl
+1. save in plugins/createChar/createChar.pl
 2. Change char to blank on control/config.txt
 3. add createChar in loadPlugins_list at control/sys.txt
 should look like this :
