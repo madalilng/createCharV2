@@ -20,13 +20,13 @@ sub create {
 	my (undef, $args) = @_;
 	Plugins::delHooks($hooks);
 	if ($config{char} != 1 ) {
-		my $char_name = GenerateName("cv(r,v)(en)vccv");
+		my $char_name = GenerateName("cv(r,v)c(en)cv cvvcvcv");
 		message "[CreateChar] Creating Character\n", "system";
 		message "[CreateChar] Name : " . $char_name . "\n", "system";
 		$hooks = Plugins::addHooks(
 			['charSelectScreen', \&login],
 		);
-		$messageSender->sendCharCreate(1, $char_name ,(1 + int rand(15)) ,(1 + int rand(5)) ,0 ,(1 + int rand(2)) );
+		$messageSender->sendCharCreate(1, $char_name ,(1 + int rand(10)) ,(1 + int rand(5)) ,0 ,(int rand(2)) );
 		$timeout{'charlogin'}{'time'} = time;
 		$args->{return} = 2;
 	}
