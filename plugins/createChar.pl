@@ -20,16 +20,33 @@ sub create {
 	my (undef, $args) = @_;
 	Plugins::delHooks($hooks);
 	if ($config{char} != 1 ) {
-		my $char_name = GenerateName("cv(r,v)c(en)cv cvvcvcv");
+		my $char_name = GenerateName("cv(r,v)(en)cv( ,c)vcvcv");
 		message "[CreateChar] Creating Character\n", "system";
 		message "[CreateChar] Name : " . $char_name . "\n", "system";
 		$hooks = Plugins::addHooks(
-			['charSelectScreen', \&login],
+			['character_creation_failed', \&failed],
+			['character_creation_successful', \&successful],
 		);
-		$messageSender->sendCharCreate(1, $char_name ,(1 + int rand(10)) ,(1 + int rand(5)) ,0 ,(int rand(2)) );
+		$messageSender->sendCharCreate(2, $char_name ,(1 + int rand(10)) ,(1 + int rand(5)) ,0 ,(int rand(2)) );
 		$timeout{'charlogin'}{'time'} = time;
 		$args->{return} = 2;
 	}
+}
+
+sub failed {
+	my (undef, $args) = @_;
+	Plugins::delHooks($hooks);
+	$hooks = Plugins::addHooks(
+		['charSelectScreen', \&create],
+	);
+}
+
+sub successful {
+	my (undef, $args) = @_;
+	Plugins::delHooks($hooks);
+	$hooks = Plugins::addHooks(
+		['charSelectScreen', \&login],
+	);
 }
 
 sub login {
