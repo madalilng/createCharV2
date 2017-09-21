@@ -1,8 +1,13 @@
 ################### How to ###################
-1. save in plugins/createChar/createChar.pl
-2. Change char to blank on control/config.txt
+1. copy the whole git to openkore root directory
+2. Change char to blank in control/config.txt
 3. add createChar in loadPlugins_list at control/sys.txt
 should look like this :
+
+folder structure
+plugins -> createChar -> createChar.pl
+replace ServerType0.pm in
+src -> Network -> Recieve -> ServerType0.pm
 
 control/config.txt
 #################
