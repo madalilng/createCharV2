@@ -27,7 +27,7 @@ sub create {
 			['character_creation_failed', \&failed],
 			['character_creation_successful', \&successful],
 		);
-		$messageSender->sendCharCreate(2, $char_name ,(1 + int rand(10)) ,(1 + int rand(5)) ,0 ,(int rand(2)) );
+		$messageSender->sendCharCreate(1, $char_name ,(1 + int rand(10)) ,(1 + int rand(5)) ,0 ,(int rand(2)) );
 		$timeout{'charlogin'}{'time'} = time;
 		$args->{return} = 2;
 	}
