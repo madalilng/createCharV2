@@ -14,7 +14,7 @@ my $hooks = Plugins::addHooks(
 	['charSelectScreen', \&create],
 );
 
-Plugins::register('charCreate_test', 'Automatically Create character', sub { Plugins::delHooks($hooks) });
+Plugins::register('charCreate', 'Automatically Create character', sub { Plugins::delHooks($hooks) });
 
 sub create {
 	my (undef, $args) = @_;
